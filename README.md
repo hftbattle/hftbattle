@@ -17,7 +17,8 @@ git clone https://github.com/hftbattle/hftbattle.git
 - [Добавление стратегии](#add_strategy)
 - [Запуск стратегии](#run_strategy)
 
-## Установка зависимостей <a id = "requirements"></a>
+<a id = "requirements"></a>
+## Установка зависимостей
 
 В данном разделе описаны зависимости, необходимые для следующих операционных систем:
 
@@ -25,7 +26,8 @@ git clone https://github.com/hftbattle/hftbattle.git
 - [macOS](#macos)
 - [Windows](#windows)
 
-### Ubuntu <a id = "ubuntu"></a>
+<a id = "ubuntu"></a>
+### Ubuntu
 
 Для установки зависимостей на Ubuntu можно запустить скрипт *packages_ubuntu.sh*, находящийся в корне репозитория:
 
@@ -39,7 +41,8 @@ sudo ./packages_ubuntu.sh
 sudo apt-get update && sudo apt-get install g++ cmake python3 --yes
 ```
 
-### macOS <a id = "macos"></a>
+<a id = "macos"></a>
+### macOS
 
 Для установки зависимостей на macOS можно запустить скрипт *packages_mac.sh*, находящийся в корне репозитория:
 
@@ -67,7 +70,8 @@ sudo apt-get update && sudo apt-get install g++ cmake python3 --yes
   brew install cmake python3
   ```
 
-### Windows <a id = "windows"></a>
+<a id = "windows"></a>
+### Windows
 
 Для запуска под Windows необходимо иметь:
 
@@ -87,7 +91,8 @@ sudo apt-get update && sudo apt-get install g++ cmake python3 --yes
 
 Убедитесь, что пути до *cmake.exe*, *python.exe*, *g++.exe* и *mingw32-make.exe*/*make.exe* добавлены в переменную окружения *PATH*.
 
-## Биржевые данные <a id = "data"></a>
+<a id = "data"></a>
+## Биржевые данные
 
 В репозитории пакета находится папка *data*, в которой содержатся данные за несколько часов работы биржи (строка в файле конфигурации "day": "2016.09.02") для торгового инструмента контеста.
 
@@ -108,7 +113,8 @@ sudo apt-get update && sudo apt-get install g++ cmake python3 --yes
 
 Для тестирования стратегии на полном дне нужно изменить поле "day" в файле конфигурации на "2016.09.01".
 
-## Запуск стратегии <a id = "run_strategy"></a>
+<a id = "run_strategy"></a>
+## Запуск стратегии
 
 Здесь мы опишем два способа локального запуска стратегии:
 
@@ -118,7 +124,8 @@ sudo apt-get update && sudo apt-get install g++ cmake python3 --yes
 Далее мы будем предполагать, что папка вашей стратегии, а также сама стратегия называются **user_strategy**.
 О том, как создавать новые стратегии, читайте [здесь](#add_strategy).
 
-### Запуск из командной строки <a id = "command_line"></a>
+<a id = "command_line"></a>
+### Запуск из командной строки
 
 Для запуска из командной строки необходимо:
 
@@ -135,7 +142,8 @@ sudo apt-get update && sudo apt-get install g++ cmake python3 --yes
   ./run.py user_strategy
   ```
 
-### Запуск из CLion <a id = "clon"></a>
+<a id = "clon"></a>
+### Запуск из CLion
 
 Для запуска из [CLion](https://www.jetbrains.com/clion/download/) необходимо:
 
@@ -156,7 +164,8 @@ sudo apt-get update && sudo apt-get install g++ cmake python3 --yes
   ```
 - **запустить сборку проекта и симуляцию**, нажав кнопку *Run*.
 
-## Добавление стратегии <a id = "add_strategy"></a>
+<a id = "add_strategy"></a>
+## Добавление стратегии
 
 Со временем у вас может возникнуть необходимость разрабатывать одновременно несколько различных стратегий или идей.
 При этом держать всё в рамках одного файла становится неудобно.
@@ -165,7 +174,8 @@ sudo apt-get update && sudo apt-get install g++ cmake python3 --yes
 - [На языке C++](#cpp)
 - [На языке Python](#python)
 
-### Создание новой C++ стратегии <a id = "cpp"></a>
+<a id = "cpp"></a>
+### Создание новой C++ стратегии
 
 Для создания новой стратегии на языке C++:
 
@@ -203,7 +213,8 @@ REGISTER_CONTEST_STRATEGY(UserStrategy, best_strategy_ever)
   ```
 - Если вы работаете из CLion, то вам нужно выполнить *Tools > CMake > Reload CMake Project*.
 
-### Создание новой Python стратегии <a id = "python"></a>
+<a id = "python"></a>
+### Создание новой Python стратегии
 
 К сожалению, пока нет возможности создавать новые папки для `Python` стратегий.
 Пожалуйста, пишите свою стратегию в файле `strategies/python_strategy/python_strategy.py`.
