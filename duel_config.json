@@ -1,0 +1,9 @@
+{
+  "day": "2016.11.08",
+  "duel": {
+    "strategies": [
+      "strategies/sample_strategy/sample_strategy.json",
+      "strategies/stay_on_best_price_improved_strategy/stay_on_best_price_improved_strategy.json"
+    ]
+  }
+}
