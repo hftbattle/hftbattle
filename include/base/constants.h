@@ -21,12 +21,8 @@ using Microseconds = std::chrono::microseconds;
 static constexpr Price kMinPrice(0);
 static constexpr Price kMaxPrice(100000000);
 
-// docs.constants.kMinStopLossResult.class
 static constexpr Decimal kMinStopLossResult = Decimal(-100000.0);
-
-// docs.constants.kMaximumMaxExecutedAmount.class
 static constexpr Amount kMaximumMaxExecutedAmount = 100;
-
 static constexpr int32_t kMaxAllowedGapFromMidPrice = 2;
 
 namespace simulator {
