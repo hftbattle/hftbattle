@@ -45,6 +45,6 @@ else:
     sys.exit()
 
 executable_path = os.path.join(script_path, executable_name)
-process = subprocess.Popen([executable_path, config], shell=False, stdout=subprocess.PIPE)
+process = subprocess.Popen([executable_path, config], shell=False, stdout=subprocess.PIPE, env=dict(os.environ, PYTHONPATH="."))
 for line in iter(process.stdout.readline, b''):
     sys.stdout.write(line.decode())
