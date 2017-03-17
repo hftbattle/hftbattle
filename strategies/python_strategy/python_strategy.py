@@ -11,7 +11,7 @@ class Params:
 
 def init(strat, config):
     Params.VOLUME = config.get('VOLUME', 1)
-    Params.MAX_POS = Params.VOLUME * config.get('POS_MULT', 1)
+    Params.MAX_POS = config.get('MAX_POS', 1)
     Params.OFFSET = Price(config.get('OFFSET', 18))
 
     strat.set_max_total_amount(Params.MAX_POS)
