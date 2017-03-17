@@ -3,9 +3,10 @@
 
 using namespace hftbattle;
 
-class UserStrategy : public ParticipantStrategy {
+namespace {
+class TemplateStrategy : public ParticipantStrategy {
 public:
-  explicit UserStrategy(const JsonValue& /*config*/) { }
+  explicit TemplateStrategy(const JsonValue& /*config*/) { }
 
   void trading_book_update(const OrderBook& /*order_book*/) override { }
 
@@ -17,5 +18,6 @@ public:
 
   void signal_deals_update(std::vector<Deal>&& /*deals*/) override { }
 };
+}  // namespace
 
-REGISTER_CONTEST_STRATEGY(UserStrategy, sample_strategy)
+REGISTER_CONTEST_STRATEGY(TemplateStrategy, template_strategy)
