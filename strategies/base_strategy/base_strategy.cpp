@@ -34,9 +34,9 @@ public:
           add_limit_order(dir, target_price, order_amount);
         }
       } else {
-        auto current = orders.orders_by_dir(dir).front();
-        if (current->price() != target_price) {
-          delete_order(current);
+        auto current_order = orders.orders_by_dir(dir).front();
+        if (current_order->price() != target_price) {
+          delete_order(current_order);
           if (order_amount > 0) {
             add_limit_order(dir, target_price, order_amount);
           }
