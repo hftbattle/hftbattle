@@ -53,4 +53,4 @@ private:
 
 }  // namespace
 
-REGISTER_CONTEST_STRATEGY(UserStrategy, user_strategy)
+REGISTER_CONTEST_STRATEGY(UserStrategy, base_strategy)
