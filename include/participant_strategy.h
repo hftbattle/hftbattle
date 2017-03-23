@@ -10,6 +10,7 @@
 #include "base/constants.h"
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace hftbattle {
@@ -105,6 +106,8 @@ public:
   // docs.participant_strategy.is_our.deal
   bool is_our(const Deal& deal) const;
 
+  void fix_moment_in_viewer(const std::string& name);
+
   ParticipantStrategy();
 
   virtual ~ParticipantStrategy();
@@ -133,6 +136,7 @@ private:
   struct tm current_update_server_time_tm_;
   Amount max_executed_amount_;
   Amount executed_amount_;
+  std::vector<std::pair<std::string, std::string>> viewer_links_;
 };
 
 #define REGISTER_CONTEST_STRATEGY(ClassName, file) \

@@ -24,6 +24,7 @@ static constexpr Price kMaxPrice(100000000);
 static constexpr Decimal kMinStopLossResult = Decimal(-100000.0);
 static constexpr Amount kMaximumMaxExecutedAmount = 100;
 static constexpr int32_t kMaxAllowedGapFromMidPrice = 2;
+static constexpr size_t kMaxViewerMomentsCount = 50;
 
 namespace simulator {
 

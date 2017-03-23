@@ -174,6 +174,7 @@ cdef extern from "participant_strategy.h" namespace "hftbattle":
     void delete_all_orders_at_price (Dir dir, Price price) const
     bool is_our(const Order* order) const
     bool is_our(const Deal& deal) const
+    void fix_moment_in_viewer(const string& name)
 
 
 cdef extern from "execution_report.h" namespace "hftbattle":

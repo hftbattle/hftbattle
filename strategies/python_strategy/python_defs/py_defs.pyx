@@ -542,6 +542,9 @@ cdef class ParticipantStrategy:
   def is_our(self, Deal deal):
     return self._this.is_our(deref(deal._this))
 
+  def fix_moment_in_viewer(self, str name):
+    return self._this.fix_moment_in_viewer(name)
+
 
 # docs.execution_report.class
 cdef class ExecutionReport:
