@@ -38,11 +38,6 @@ public:
     return amount_rest_;
   }
 
-  // docs.order.security_id
-  SecurityId security_id() const {
-    return security_id_;
-  }
-
   // docs.order.status
   OrderStatus status() const {
     return status_;

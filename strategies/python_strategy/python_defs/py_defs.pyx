@@ -142,23 +142,6 @@ cdef class Decimal:
     return self._this.get_numerator()
 
 
-cdef class SecurityId:
-  cdef const defs.SecurityId* _this
-
-  @staticmethod
-  cdef inline SecurityId _from_this(const defs.SecurityId* _this):
-    cdef SecurityId result = SecurityId.__new__(SecurityId)
-    result._this = _this
-    return result
-
-  @staticmethod
-  cdef inline SecurityId _from_this_tmp(defs.SecurityId&& _this):
-    return SecurityId._from_this(new defs.SecurityId(_this))
-
-  def __dealloc__(self):
-    del self._this
-
-
 # docs.order.class
 cdef class Order:
   cdef OrderPtr _this
@@ -188,10 +171,6 @@ cdef class Order:
   # docs.order.status
   def status(self):
     return self._this.status()
-
-  # docs.order.security_id
-  def security_id(self):
-    return SecurityId._from_this_tmp(self._this.security_id())
 
   # docs.order.amount_rest
   def amount_rest(self):
@@ -357,10 +336,6 @@ cdef class OrderBook:
   def quote_by_index(self, dir, size_t index):
     return Quote._from_this(&self._this.quote_by_index(dir, index))
 
-  # docs.order_book.security_id
-  def security_id(self):
-    return SecurityId._from_this_tmp(self._this.security_id())
-
   # docs.order_book.best_price
   def best_price(self, dir):
     return Decimal._from_this_tmp(self._this.best_price(dir))
@@ -467,10 +442,6 @@ cdef class ParticipantStrategy:
   def trading_book(self):
     return OrderBook._from_this(&self._this.trading_book())
 
-  # docs.participant_strategy.signal_book
-  def signal_book(self):
-    return OrderBook._from_this(&self._this.signal_book())
-
   # docs.participant_strategy.executed_amount
   def executed_amount(self):
     return self._this.executed_amount()
@@ -493,10 +464,6 @@ cdef class ParticipantStrategy:
 
   def add_chart_point(self, str line_name, Decimal value, int y_axis_type = 0, uint8_t chart_number = 1):
     return self._this.add_chart_point(line_name, deref(value._this), <defs.ChartYAxisType>(y_axis_type), chart_number)
-
-  # docs.participant_strategy.signal_security_exists
-  def signal_security_exists(self):
-    return self._this.signal_security_exists()
 
   # docs.participant_strategy.delete_order
   def delete_order(self, Order order):

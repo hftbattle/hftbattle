@@ -43,11 +43,6 @@ cdef extern from "base/common_enums.h" namespace "hftbattle::ChartYAxisType":
     Right = 1
 
 
-cdef extern from "base/constants.h" namespace "hftbattle::simulator":
-  cdef cppclass SecurityId:
-    SecurityId(SecurityId&&) except +
-
-
 cdef extern from "<chrono>" namespace "std::chrono":
   cdef cppclass microseconds:
     microseconds(microseconds&&) except +
@@ -76,7 +71,6 @@ cdef extern from "order.h" namespace "hftbattle":
     Dir dir () const
     Amount amount () const
     OrderStatus status () const
-    SecurityId security_id () const
     Amount amount_rest () const
     Price price () const
 
@@ -125,7 +119,6 @@ cdef extern from "order_book.h" namespace "hftbattle":
     Amount best_volume (Dir dir) const
     Price price_by_index (Dir dir, size_t index) const
     const Quote& quote_by_index (Dir dir, size_t index) const
-    SecurityId security_id () const
     Price best_price (Dir dir) const
     Price min_step () const
     Decimal fee_per_lot () const
@@ -156,13 +149,11 @@ cdef extern from "<time.h>":
 cdef extern from "participant_strategy.h" namespace "hftbattle":
   cdef cppclass ParticipantStrategy:
     const OrderBook& trading_book() const
-    const OrderBook& signal_book() const
     Amount executed_amount () const
     Microseconds server_time () const
     Amount volume_by_price (Dir dir, Price price) const
     Amount amount_before_order (const OrderPtr order) const
     void add_chart_point (const string& line_name, Decimal value, ChartYAxisType y_axis_type, uint8_t chart_number) const
-    bool signal_security_exists () const
     void delete_order (OrderPtr order) const
     Decimal current_result () const
     bool add_limit_order (Dir dir, Price price, Amount amount) const

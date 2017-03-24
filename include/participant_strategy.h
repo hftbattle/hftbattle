@@ -37,20 +37,9 @@ public:
   // docs.participant_strategy.execution_report_update
   virtual void execution_report_update(const ExecutionReport& /*execution_report*/) { }
 
-  // docs.participant_strategy.signal_book_update
-  virtual void signal_book_update(const OrderBook& /*order_book*/) { }
-
-  // docs.participant_strategy.signal_deals_update
-  virtual void signal_deals_update(std::vector<Deal>&& /*deals*/) { }
-
   // docs.participant_strategy.trading_book
   const OrderBook& trading_book() const {
     return *trading_book_;
-  }
-
-  // docs.participant_strategy.signal_book
-  const OrderBook& signal_book() const {
-    return *signal_book_;
   }
 
   // docs.participant_strategy.add_limit_order
@@ -79,9 +68,6 @@ public:
 
   // docs.participant_strategy.current_result
   Decimal current_result() const;
-
-  // docs.participant_strategy.signal_security_exists
-  bool signal_security_exists() const;
 
   // docs.participant_strategy.server_time
   Microseconds server_time() const;
@@ -117,10 +103,6 @@ protected:
     return trading_book_;
   }
 
-  const std::shared_ptr<OrderBook>& signal_book_snapshot() const {
-    return signal_book_;
-  }
-
 private:
   void trade(std::shared_ptr<DataFeedSnapshot>&& snapshot);
 
@@ -129,9 +111,7 @@ private:
   friend class simulator::RoyalManagerContest;
 
   std::shared_ptr<OrderBook> trading_book_;
-  std::shared_ptr<OrderBook> signal_book_;
   const SecurityId trading_security_;
-  const SecurityId signal_security_;
   std::unique_ptr<Strategy> strategy_;
   struct tm current_update_server_time_tm_;
   Amount max_executed_amount_;

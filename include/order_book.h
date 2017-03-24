@@ -90,11 +90,6 @@ public:
     return cnt_book_updates_;
   }
 
-  // docs.order_book.security_id
-  SecurityId security_id() const {
-    return security_id_;
-  }
-
   virtual ~OrderBook() = default;
 
 protected:
