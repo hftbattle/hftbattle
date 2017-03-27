@@ -376,6 +376,7 @@ cdef class OrderBook:
   def quotes_count(self, dir):
     return self._this.quotes_count(dir)
 
+  # docs.order_book.all_quotes
   def all_quotes(self, dir):
     cdef:
       size_t i = 0
