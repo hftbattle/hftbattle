@@ -35,10 +35,10 @@ git clone https://github.com/hftbattle/hftbattle.git
 sudo ./packages_ubuntu.sh
 ```
 
-Скрипт устанавливает компилятор g++, систему сборки [CMake](https://cmake.org/) и Python 3:
+Скрипт устанавливает компилятор g++, систему сборки [CMake](https://cmake.org/) и Python 2.7.*:
 
 ```bash
-sudo apt-get update && sudo apt-get install g++ cmake python3 --yes
+sudo apt-get update && sudo apt-get install g++ cmake python --yes
 ```
 
 <a id = "macos"></a>
@@ -64,10 +64,10 @@ sudo apt-get update && sudo apt-get install g++ cmake python3 --yes
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   ```
 
-- [CMake](https://cmake.org/) и Python 3:
+- [CMake](https://cmake.org/) и Python 2.7.*:
 
   ```bash
-  brew install cmake python3
+  brew install cmake python
   ```
 
 <a id = "windows"></a>
