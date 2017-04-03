@@ -93,13 +93,13 @@ Make sure that paths to *cmake.exe*, *python.exe*, *g++.exe* and *mingw32-make.e
 <a id="data"></a>
 ## Market data
 
-The package repository contains a data folder with the first several hours of market data (configuration file line "day": "2016.09.01") of the trading symbol.
+The package repository contains a data folder with the first several hours of market data (configuration file line "day": "2016.09.02") of the trading symbol.
 
 That's enough to:
 - make sure your code compiles successfully
 - debug your strategy
 
-To check out the core ideas of the strategy you may download dara for a complete trading day "2016.09.01" from [here](https://www.dropbox.com/s/ko2zgwt004yejts/data.zip?dl=1).
+To check out the core ideas of the strategy you may download data for a complete trading day "2016.09.01" from [here](https://www.dropbox.com/s/ko2zgwt004yejts/data.zip?dl=1).
 
 You may do it manually: just unzip the file into the root directory or use *download.py* script from the repository root.
 
