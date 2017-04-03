@@ -13,9 +13,9 @@ public:
     set_max_total_amount(max_pos_);
   }
 
-  Amount amount_available(Amount pos, Dir dir) {
-    Amount max_volume = std::min(max_pos_ - dir_sign(dir) * pos, volume_);
-    return std::max(0, max_volume);
+  Amount max_available_order_amount(Amount pos, Dir dir) {
+    Amount max_amount = std::min(max_pos_ - dir_sign(dir) * pos, volume_);
+    return std::max(0, max_amount);
   }
 
   void trading_book_update(const OrderBook& order_book) override {
@@ -27,7 +27,7 @@ public:
 
     for (Dir dir : {BID, ASK}) {
       Price target_price = middle_price - dir_sign(dir) * offset_;
-      Amount order_amount = amount_available(pos, dir);
+      Amount order_amount = max_available_order_amount(pos, dir);
 
       if (orders.active_orders_count(dir) == 0) {
         if (order_amount > 0) {
