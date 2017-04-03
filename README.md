@@ -1,221 +1,219 @@
-# Пакет для локальной разработки
+# Off-line development package
 
-Мы подготовили для вас пакет для локальной разработки стратегий на C++ и Python.
-Он включает в себя набор библиотек и файлов, достаточный для разработки и тестирования стратегий на вашем компьютере.
+We have prepared an off-line C++ and Python strategy development package.
+It has a kit containing libraries and files that are sufficient to develop and test strategies on your computer.
 
-Пакет опубликован на [GitHub](https://github.com/hftbattle/hftbattle).
-Его можно скачать следующей командой (должен быть установлен [Git](http://git-scm.com/download)):
+Download it using the following command ([Git](http://git-scm.com/download) must be installed):
 
 ```bash
 git clone https://github.com/hftbattle/hftbattle.git
 ```
 
-Подробнее об использовании пакета для локальной разработки:
+More on how to use Off-line Development Package:
 
-- [Установка зависимостей](#requirements)
-- [Биржевые данные](#data)
-- [Добавление стратегии](#add_strategy)
-- [Запуск стратегии](#run_strategy)
+- [Setting dependencies](#requirements)
+- [Market data](#data)
+- [Strategy adding](#add_strategy)
+- [Strategy starting](#run_strategy)
 
-<a id = "requirements"></a>
-## Установка зависимостей
 
-В данном разделе описаны зависимости, необходимые для следующих операционных систем:
+<a id="requirements"></a>
+## Dependency management
+
+Here you can find dependency management suggestions for the following operating systems:
 
 - [Ubuntu](#ubuntu)
 - [macOS](#macos)
 - [Windows](#windows)
 
-<a id = "ubuntu"></a>
+
+<a id="ubuntu"></a>
 ### Ubuntu
 
-Для установки зависимостей на Ubuntu можно запустить скрипт *packages_ubuntu.sh*, находящийся в корне репозитория:
+Run *packages_ubuntu.sh* to install dependencies:
 
 ```bash
 sudo ./packages_ubuntu.sh
 ```
 
-Скрипт устанавливает компилятор g++, систему сборки [CMake](https://cmake.org/) и Python 2.7.*:
+The script installs g++, [CMake](https://cmake.org/) and Python 2:
 
 ```bash
 sudo apt-get update && sudo apt-get install g++ cmake python --yes
 ```
 
-<a id = "macos"></a>
+<a id="macos"></a>
 ### macOS
 
-Для установки зависимостей на macOS можно запустить скрипт *packages_mac.sh*, находящийся в корне репозитория:
+Run *packages_mac.sh* to install dependencies:
 
 ```bash
 ./packages_mac.sh
 ```
+The script installs:
 
-Скрипт устанавливает:
-
-- Компилятор Apple LLVM (подробное описание процедуру установки [здесь](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/)):
+- Apple LLVM compiler (you can find detailed installation instruction [here](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/)):
 
   ```bash
   xcode-select --install
   ```
 
-- Менеджер пакетов [Homebrew](http://brew.sh/):
+- [Homebrew](http://brew.sh/) package manager:
 
   ```bash
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   ```
 
-- [CMake](https://cmake.org/) и Python 2.7.*:
+- [CMake](https://cmake.org/), [JsonCpp](https://github.com/open-source-parsers/jsoncpp) and Python 2:
 
   ```bash
-  brew install cmake python
+  brew install cmake jsoncpp python
   ```
 
-<a id = "windows"></a>
+<a id="windows"></a>
 ### Windows
 
-Для запуска под Windows необходимо иметь:
+It's essential to have the following to run local pack under Windows:
 
-- Компилятор [TDM64-GCC](http://tdm-gcc.tdragon.net) версии `5.1.0` и выше:
+- [TDM64-GCC](http://tdm-gcc.tdragon.net) compiler at least version `5.1.0`:
 
-  Скачать можно [здесь](http://tdm-gcc.tdragon.net/download).
+  You may download it [here](http://tdm-gcc.tdragon.net/download).
+  Note that you need **TDM64-gcc**.
 
-- [CMake](https://cmake.org/) версии `2.8.4` и выше:
+- [CMake](https://cmake.org/) at least version `2.8.4`:
 
-  Например, можно поставить [CLion](https://www.jetbrains.com/clion/download/), *CMake* при этом будет в комплекте.
+  You may install [CLion](https://www.jetbrains.com/clion/download/), or [download](https://cmake.org/) **CMake** from the official website.
 
-  Или же [скачать CMake](https://cmake.org/) с официального сайта.
+- Python `2.7`:
 
-- Python `2.7` и выше:
+  You may download it [here](https://www.python.org/downloads/).
 
-  Скачать можно [здесь](https://www.python.org/downloads/).
+Make sure that paths to *cmake.exe*, *python.exe*, *g++.exe* and *mingw32-make.exe*/*make.exe* are added to *PATH* environment variable.
 
-Убедитесь, что пути до *cmake.exe*, *python.exe*, *g++.exe* и *mingw32-make.exe*/*make.exe* добавлены в переменную окружения *PATH*.
+<a id="data"></a>
+## Market data
 
-<a id = "data"></a>
-## Биржевые данные
+The package repository contains a data folder with the first several hours of market data (configuration file line "day": "2016.09.01") of the trading symbol.
 
-В репозитории пакета находится папка *data*, в которой содержатся данные за несколько часов работы биржи (строка в файле конфигурации "day": "2016.09.02") для торгового инструмента контеста.
+That's enough to:
+- make sure your code compiles successfully
+- debug your strategy
 
-Этого достаточно для того, чтобы:
+To check out the core ideas of the strategy you may download dara for a complete trading day "2016.09.01" from [here](https://www.dropbox.com/s/ko2zgwt004yejts/data.zip?dl=1).
 
-- убедиться, что ваш код компилируется
-- отладить вашу стратегию
-
-Чтобы проверить саму идею стратегии, вы можете скачать данные за один полный торговый день "2016.09.01" по [ссылке](https://www.dropbox.com/s/ko2zgwt004yejts/data.zip?dl=1).
-
-Это можно сделать вручную, разархивировав затем файл в корень директории, или же с помощью скрипта *download.py*, лежащего в корне репозитория:
+You may do it manually: just unzip the file into the root directory or use *download.py* script from the repository root.
 
 ```bash
 ./download.py
 ```
 
-Скрипт скачает файл *data.zip* и разархивирует его в папку *data*.
+The script will download the file *data.zip* and unzip it into the *data* folder.
 
-Для тестирования стратегии на полном дне нужно изменить поле "day" в файле конфигурации на "2016.09.01".
+To test the strategy on the complete trading day you should change the value of the field `day` to "2016.09.01" in the configuration file.
 
-<a id = "run_strategy"></a>
-## Запуск стратегии
+<a id="run_strategy"></a>
+## Execution of your strategy
 
-Здесь мы опишем два способа локального запуска стратегии:
+This chapter describes execution of your strategy:
 
-- [Запуск из командной строки](#command_line)
-- [Запуск из CLion](#clion)
+- [Execution in command line](#command_line)
+- [CLion usage](#clion)
 
-Далее мы будем предполагать, что папка вашей стратегии, а также сама стратегия называются **user_strategy**.
-О том, как создавать новые стратегии, читайте [здесь](#add_strategy).
+We will assume, that your strategy and folder are called **user_strategy**.
+Read [here](#add_strategy) about creating new strategies.
 
-<a id = "command_line"></a>
-### Запуск из командной строки
+<a id="command_line"></a>
+### Execution in command line
 
-Для запуска из командной строки необходимо:
+You need to:
 
-- **скомпилировать все имеющиеся стратегии**:
+- **compile all the strategies you have**:
 
   ```bash
   ./build.py
   ```
 
-  В результате для ваших стратегий будут собраны библиотеки в папке *build*.
-- **запустить симуляцию**:
+  This will create libraries for your strategies in the *build* folder.
+- **run a simulation**.
 
   ```bash
   ./run.py user_strategy
   ```
 
-<a id = "clon"></a>
-### Запуск из CLion
+<a id="clion"></a>
+### CLion usage
 
-Для запуска из [CLion](https://www.jetbrains.com/clion/download/) необходимо:
+To launch simulation in [CLion](https:/www.jetbrains.com/clion/download) you need to:
 
-- **задать исполняемый файл**:
+- **specify executable file**:
 
-  Для этого необходимо зайти в *Run > Edit configurations* и в качестве *Executable* выбрать исполняемый файл в корне директории, соответствующий вашей платформе:
+  open *Run > Edit configurations*, specify executable file in the root of directory as *Executable*:
 
-  - *mac_launcher* для macOS
-  - *windows_launcher* для Windows
-  - *linux_launcher* для Linux
+  - *mac_launcher* for macOS
+  - *windows_launcher* for Windows
+  - *linux_launcher* for Linux
 
-- **прописать название стратегии** в аргументах командной строки:
+- **specify path to your configuration file** in the arguments of command line:
 
-  Для этого в той же вкладке *Run > Edit configurations* в строчке *Program arguments* необходимо написать путь до файла конфигурации вашей стратегии, например:
+  in the same tab *Run > Edit configurations* you need to fill *Program arguments* with relative path to configuration file of your strategy.
+  For example:
 
   ```bash
   strategies/user_strategy/user_strategy.json
   ```
-- **запустить сборку проекта и симуляцию**, нажав кнопку *Run*.
 
-<a id = "add_strategy"></a>
-## Добавление стратегии
+- **start building the project and simulating strategy** by pressing *Run* button.
 
-Со временем у вас может возникнуть необходимость разрабатывать одновременно несколько различных стратегий или идей.
-При этом держать всё в рамках одного файла становится неудобно.
-В этом разделе мы расскажем о том, как можно добавлять новые стратегии в пакете для локальной разработки:
+<a id="add_strategy"></a>
+## Strategy adding
 
-- [На языке C++](#cpp)
-- [На языке Python](#python)
+Once you decide to try more ideas and develop more strategies, using the one strategy - one file approach may become neccessary. Let’s have a look at how to add new strategies in the off-line development package.
 
-<a id = "cpp"></a>
-### Создание новой C++ стратегии
+- [C++](#cpp)
+- [Python](#python)
 
-Для создания новой стратегии на языке C++:
+<a id="cpp"></a>
+### Creating a new C++ strategy
 
-#### 1. Создайте папку стратегии
+#### 1. Create a strategy folder
 
-- В папке `strategies` создайте копию папки `sample_strategy`
-- Выберите имя для вашей стратегии.
+- In the `strategies` folder create a copy of the `sample_strategy` folder
+- Choose a name of your strategy.
 
-  Далее, мы будем обозначать его *strategy_name*.
+Let’s call it *strategy_name*.
 
-- Назовите новую папку, а также json и cpp файлы в ней *strategy_name*, *strategy_name.json*, *strategy_name.cpp* соответственно.
+- Rename the new folder with json and cpp files inside with the *strategy_name*, *strategy_name.json*, *strategy_name.cpp* respectively.
 
-#### 2. Зарегистрируйте стратегию
+#### 2. Register your strategy
 
-После копирования файлов стратегии необходимо немного изменить *cpp* файл стратегии.
-А именно, нужно **зарегистрировать** свою новую стратегию следующей командой в конце cpp-файла:
+Once the files are copied you need to edit *cpp* file.
+
+**Register** your new strategy with the following command at the end of the cpp file:
 
 ```c++
 REGISTER_CONTEST_STRATEGY(UserStrategy, strategy_name)
 ```
 
-Например, если ваша папка, .json-файл и стратегия называются *best_strategy_ever*, то вам необходимо добавить следующую строку в конец файла *best_strategy_ever.cpp*:
+Let’s say your folder, .json-file and the strategy are called *best_strategy_ever*. You will therefore need to add the following line at the end of the file *best_strategy_ever.cpp*:
 
 ```c++
 REGISTER_CONTEST_STRATEGY(UserStrategy, best_strategy_ever)
 ```
 
-Необходимость регистрировать новую стратегию вызвана особенностями динамической линковки стратегий с симулятором.
+This is necessary due to specifics of the simulator’s dynamic linkage process of the strategies.
 
-#### 3. Перезагрузите CMake
+#### 3. Update CMake configuration
 
-- Для тех, кто работает из консоли, нужно заново выполнить скрипт *build.py*:
+- Those of you who work in cli run the following script *build.py*:
   ```bash
   ./build.py
   ```
-- Если вы работаете из CLion, то вам нужно выполнить *Tools > CMake > Reload CMake Project*.
+- Those working in CLion, go to *Tools > CMake > Reload CMake Project*.
 
-<a id = "python"></a>
-### Создание новой Python стратегии
+<a id="python"></a>
+### Creating a new Python strategy
 
-К сожалению, пока нет возможности создавать новые папки для `Python` стратегий.
-Пожалуйста, пишите свою стратегию в файле `strategies/python_strategy/python_strategy.py`.
-О запуске стратегии вы можете почитать [здесь](#run_strategy).
+Unfortunately, there is currently no way to create new folders for Python strategies.
+Please write your strategy in the
+ `strategies/python_strategy/python_strategy.py` file.
+You may find out [here](#run_strategy) how to run the strategy.
