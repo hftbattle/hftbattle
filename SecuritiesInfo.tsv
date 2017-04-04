@@ -1,2 +1,2 @@
 SymbolDescription	MarketID	MinStep	PriceOfMinStep	SharesPerLot	PricePerWhat	FeePerLot	FeeByVolume	AlternativeFeePerLot	AlternativeFeeByVolume
-HFTBI	BTL	1	1	1	PerLot	10	0	0	0
+HFTBI	BTL	1	1	1	PerLot	8	0	0	0
