@@ -6,16 +6,20 @@
 
 namespace hftbattle {
 
-// docs.constants.Amount.class
+// An alias for int32_t for better code readability.
+// This alias is only used in C++.
 using Amount = int32_t;
 
-// docs.constants.Price.class
+// An alias for Decimal class, you can read about Decimal class here: <https://docs.hftbattle.com/en/api/Other.html#decimal>.
 using Price = Decimal;
 
-// docs.constants.Id.class
+// A numeric identifier, an alias for uint64_t.
+// This alias is only used in C++.
 using Id = uint64_t;
 
-// docs.constants.Microseconds.class
+// An alias for std::chrono::microseconds.
+// Read more information here: <http://en.cppreference.com/w/cpp/chrono/duration>.
+// This class is only used in C++, in **Python** standard int type is used.
 using Microseconds = std::chrono::microseconds;
 
 static constexpr Price kMinPrice(0);

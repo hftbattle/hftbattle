@@ -12,7 +12,10 @@ using IsConvertibleToDecimal = std::integral_constant<
     std::is_integral<T>::value || std::is_same<T, double>::value
 >;
 
-// docs.decimal.class
+// Decimal class is used for performing high precision calculations and for price representation (for convenience, it has Price alias).
+// You can also get double using get_double() method.
+// Note: in C++ you can't print Decimal using cout/cerr/printf, however, you can use our output streams.
+// In Python you can use print.
 class Decimal {
 private:
   struct FromNumeratorTag{};

@@ -15,9 +15,20 @@ class Logger;
 
 typedef Logger* LoggerId;
 
-// docs.log.main_info.class
+// Logs are a convenient way to output information about strategy's behaviour.
+// They allow you to control the level of records detalization: if you want you can turn on the most detailed log level, or, vice versa, you can only log the most important information only.
+// Logs are also dumped automatically in a file.
 
-// docs.log.log_levels.class
+// This enum represents the log level.
+// There is a corresponding output stream for each log level.
+// For example, for Error log level there is an ERROR() output stream.
+// Let's assume you want to choose the Error log level.
+// Then you need to set "log_level": "error" in your strategy's configuration file.
+// In this situation, SCREEN() and FATAL() will also work.
+// > Note 1: output streams ERROR() and below are dumped in a file only, while SCREEN() and FATAL() are also displayed on the screen.
+// >
+// > Note 2: FATAL() output stream terminates program.
+// > Use it with caution.
 enum class LogLevel: int8_t {
   Debug,
   Info,

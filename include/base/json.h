@@ -147,7 +147,11 @@ public:
   JsonView operator[](size_t index);
   JsonView operator[](const std::string& key);
 
-  // docs.json.as
+  // Transforms json-value to a value of given type and returns it.
+  // The usage example to get a string — `config["field_in_json"].as<std::string>()`.
+  // You are able to set a default return value in brackets (it will be used if there's no such field in config):
+  // - `config["field_in_json"].as<std::string>("default_string")`.
+  // - `config["time"].as<Microseconds>(10us)`.
   template<typename T>
   T as() const {
     check_defined();
@@ -227,7 +231,10 @@ protected:
   Json::Value* const root_;
 };
 
-// docs.json.class
+// JSON data format is described here: <https://en.wikipedia.org/wiki/JSON>.
+// In our implementation you can edit your strategy configuration in .json file.
+// To get the value from the Json use "as" method.
+// This class is only used in C++, in **Python** standard dict is used.
 class JsonValue : private std::unique_ptr<Json::Value>, public JsonView {
 public:
   using iterator = JsonIterator;

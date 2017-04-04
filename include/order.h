@@ -10,40 +10,43 @@
 
 namespace hftbattle {
 
-// docs.order.class
+// Description of the market order.
 class Order {
 public:
-  // docs.order.id
+  // Returns the unique numeric identifier of an order, which was received during a simulation.
+  // It can be used to aggregate some information about the order.
   Id id() const {
     return id_;
   }
 
-  // docs.order.dir
+  // Returns a direction of the order.
   Dir dir() const {
     return dir_;
   }
 
-  // docs.order.price
+  // Returns a price of the order.
   Price price() const {
     return price_;
   }
 
-  // docs.order.amount
+  // Returns an initial volume of the order (the amount of lots).
   Amount amount() const {
     return amount_;
   }
 
-  // docs.order.amount_rest
+  // Returns current volume of the order (the amount of lots which have not been matched with other orders yet).
   Amount amount_rest() const {
     return amount_rest_;
   }
 
-  // docs.order.status
+  // Returns an enum class value — order's status.
+  // Possible statuses are: Adding, Active, Deleting, Deleted.
+  // Please read more in the OrderStatus class description: <https://docs.hftbattle.com/en/api/CommonEnums.html#orderstatus>.
   OrderStatus status() const {
     return status_;
   }
 
-  // docs.order.server_time
+  // Returns the server time, when the order was placed, in microseconds.
   Microseconds server_time() const {
     return server_time_;
   }

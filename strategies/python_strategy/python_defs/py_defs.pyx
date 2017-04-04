@@ -46,7 +46,10 @@ except:
   pass
 
 
-# docs.decimal.class
+# Decimal class is used for performing high precision calculations and for price representation (for convenience, it has Price alias).
+# You can also get double using get_double() method.
+# Note: in C++ you can't print Decimal using cout/cerr/printf, however, you can use our output streams.
+# In Python you can use print.
 cdef class Decimal:
   cdef const defs.Decimal* _this
 
@@ -142,7 +145,7 @@ cdef class Decimal:
     return self._this.get_numerator()
 
 
-# docs.order.class
+# Description of the market order.
 cdef class Order:
   cdef OrderPtr _this
 
@@ -152,36 +155,39 @@ cdef class Order:
     result._this = _this
     return result
 
-  # docs.order.server_time
+  # Returns the server time, when the order was placed, in microseconds.
   def server_time(self):
     return self._this.server_time().count()
 
-  # docs.order.id
+  # Returns the unique numeric identifier of an order, which was received during a simulation.
+  # It can be used to aggregate some information about the order.
   def id(self):
     return self._this.id()
 
-  # docs.order.dir
+  # Returns a direction of the order.
   def dir(self):
     return self._this.dir()
 
-  # docs.order.amount
+  # Returns an initial volume of the order (the amount of lots).
   def amount(self):
     return self._this.amount()
 
-  # docs.order.status
+  # Returns an enum class value — order's status.
+  # Possible statuses are: Adding, Active, Deleting, Deleted.
+  # Please read more in the OrderStatus class description: <https://docs.hftbattle.com/en/api/CommonEnums.html#orderstatus>.
   def status(self):
     return self._this.status()
 
-  # docs.order.amount_rest
+  # Returns current volume of the order (the amount of lots which have not been matched with other orders yet).
   def amount_rest(self):
     return self._this.amount_rest()
 
-  # docs.order.price
+  # Returns a price of the order.
   def price(self):
     return Decimal._from_this_tmp(self._this.price())
 
 
-# docs.deal.class
+# Description of the deal.
 cdef class Deal:
   cdef defs.Deal* _this
 
@@ -191,28 +197,28 @@ cdef class Deal:
     result._this = _this
     return result
 
-  # docs.deal.amount
+  # Returns a volume of the deal, i.e. lots' volume which were executed in this deal.
   def amount(self):
     return self._this.amount()
 
-  # docs.deal.orders
+  # Returns an array of two pointers to orders, which were matched in this deal.
   def orders(self):
     return [Order._from_this(self._this.orders()[0]), Order._from_this(self._this.orders()[1])]
 
-  # docs.deal.server_time
+  # Returns a server time of the deal execution in microseconds.
   def server_time(self):
     return self._this.server_time().count()
 
-  # docs.deal.price
+  # Returns a price of the deal.
   def price(self):
     return Decimal._from_this_tmp(self._this.price())
 
-  # docs.deal.aggressor_side
+  # Returns a direction of the aggressor order, i.e. of the order which was placed later.
   def aggressor_side(self):
     return self._this.aggressor_side()
 
 
-# docs.quote.class
+# Description of a price level in the order book.
 cdef class Quote:
   cdef const defs.Quote* _this
 
@@ -222,24 +228,28 @@ cdef class Quote:
     result._this = _this
     return result
 
-  # docs.quote.volume
+  # Returns total volume of lots in orders in this quote.
   def volume(self):
     return self._this.volume()
 
-  # docs.quote.server_time
+  # Returns the latest server time, when the quote has been changed, in microseconds.
   def server_time(self):
     return self._this.server_time().count()
 
-  # docs.quote.price
+  # Returns a price of the quote.
   def price(self):
     return Decimal._from_this_tmp(self._this.price())
 
-  # docs.quote.dir
+  # Returns a direction of the quote.
   def dir(self):
     return self._this.dir()
 
 
-# docs.security_orders_snapshot.class
+# Description of your current orders.
+# Only orders with Adding or Active status are taken into account.
+# In deleting_amount_by_dir method orders with Deleting status are also counted.
+# The snapshot is updated before every update in strategy.
+# It remains unchanged during single update processing.
 cdef class SecurityOrdersSnapshot:
   cdef const defs.SecurityOrdersSnapshot* _this
 
@@ -249,11 +259,13 @@ cdef class SecurityOrdersSnapshot:
     result._this = _this
     return result
 
-  # docs.security_orders_snapshot.active_orders_count
+  # Takes a direction.
+  # Returns a number of your active orders with given direction, i.e. orders with Active status.
   def active_orders_count(self, dir):
     return self._this.active_orders_count(dir)
 
-  # docs.security_orders_snapshot.orders_by_dir
+  # Takes a direction.
+  # Returns a vector of pointers to your orders with given direction.
   def orders_by_dir(self, dir):
     cdef:
       size_t size = self._this.orders_by_dir(dir).size()
@@ -263,23 +275,29 @@ cdef class SecurityOrdersSnapshot:
       list_ans[i] = Order._from_this(self._this.orders_by_dir(dir)[i])
     return list_ans
 
-  # docs.security_orders_snapshot.size_by_dir
+  # Takes a direction.
+  # Returns a number of your current orders with given direction.
   def size_by_dir(self, dir):
     return self._this.size_by_dir(dir)
 
-  # docs.security_orders_snapshot.active_orders_volume
+  # Takes a direction.
+  # Returns total volume of your active orders with given direction, i.e. orders with Active status.
   def active_orders_volume(self, dir):
     return self._this.active_orders_volume(dir)
 
-  # docs.security_orders_snapshot.deleting_amount_by_dir
+  # Takes a direction.
+  # Returns a total volume of your orders with given direction, which had been sent to deletion, but have not been deleted (the ones with Deleting status) yet.
   def deleting_amount_by_dir(self, dir):
     return self._this.deleting_amount_by_dir(dir)
 
-  # docs.security_orders_snapshot.volume
+  # Takes a direction and a price.
+  # Returns total volume of the orders with given price and direction.
   def volume(self, dir, Price price):
     return self._this.volume(dir, deref(price._this))
 
-  # docs.security_orders_snapshot.orders_by_dir_as_map
+  # Takes a direction.
+  # Returns a map from price to vector of pointers to your orders with given direction.
+  # Note: the map is always ordered by price in ascending order.
   def orders_by_dir_as_map(self, dir):
     cdef:
       map[defs.Decimal, vector[OrderPtr]] cans = self._this.orders_by_dir_as_map(dir)
@@ -298,7 +316,10 @@ cdef class SecurityOrdersSnapshot:
     return ans
 
 
-# docs.order_book.class
+# This class aggregates all orders for a specific instrument.
+# Note: indices are counted from 0, beginning from the best price, i.e. in descending order for BID (Buy) and in ascending order for ASK (Sell).
+# **Only non-empty quotes** are taken into account.
+# So if a quote has index 3, that doesn't mean that it's price differs in exactly 3 minimum steps from the best price.
 cdef class OrderBook:
   cdef const defs.OrderBook* _this
 
@@ -308,75 +329,92 @@ cdef class OrderBook:
     result._this = _this
     return result
 
-  # docs.order_book.spread_in_min_steps
+  # Returns a distance between the best buy and best sell prices in minimum steps.
   def spread_in_min_steps(self):
     return self._this.spread_in_min_steps()
 
-  # docs.order_book.server_time
+  # Returns the latest server time, when the order book has been updated, in microseconds.
   def server_time(self):
     return self._this.server_time().count()
 
-  # docs.order_book.middle_price
+  # Returns a half-sum of the best prices in both directions.
   def middle_price(self):
     return Decimal._from_this_tmp(self._this.middle_price())
 
-  # docs.order_book.quote_by_price
+  # Takes a direction and a price.
+  # Returns a quote with given direction and price.
   def quote_by_price(self, dir, Price price):
     return Quote._from_this(&self._this.quote_by_price(dir, deref(price._this)))
 
-  # docs.order_book.best_volume
+  # Takes a direction.
+  # Returns a volume of the quote with the best price by given direction.
   def best_volume(self, dir):
     return self._this.best_volume(dir)
 
-  # docs.order_book.price_by_index
+  # Takes a direction and an index.
+  # Returns a price of the quote with given direction and index.
+  # Note: if the quote doesn't exist, corresponding default_quote_price is returned.
   def price_by_index(self, dir, size_t index):
     return Decimal._from_this_tmp(self._this.price_by_index(dir, index))
 
-  # docs.order_book.quote_by_index
+  # Takes a direction and an index.
+  # Returns a quote with given direction and index.
   def quote_by_index(self, dir, size_t index):
     return Quote._from_this(&self._this.quote_by_index(dir, index))
 
-  # docs.order_book.best_price
+  # Takes a direction.
+  # Returns the best price in order book with given direction.
+  # Note: if the quote doesn't exist, corresponding default_quote_price is returned.
   def best_price(self, dir):
     return Decimal._from_this_tmp(self._this.best_price(dir))
 
-  # docs.order_book.min_step
+  # Returns a minimum price step in the order book (the least possible difference between prices).
   def min_step(self):
     return Decimal._from_this_tmp(self._this.min_step())
 
-  # docs.order_book.fee_per_lot
+  # Returns a fee per one executed lot.
   def fee_per_lot(self):
     return Decimal._from_this_tmp(self._this.fee_per_lot())
 
-  # docs.order_book.volume_by_price
+  # Takes a direction and a price.
+  # Returns a volume of the quote with given direction and price.
   def volume_by_price(self, dir, Price price):
     return self._this.volume_by_price(dir, deref(price._this))
 
-  # docs.order_book.depth
+  # Returns a maximum number of visible quote levels in the order book (it's the same for both directions).
   def depth(self):
     return self._this.depth()
 
-  # docs.order_book.volume_by_index
+  # Takes a direction and an index.
+  # Returns a volume of the quote with given direction and index.
   def volume_by_index(self, dir, size_t index):
     return self._this.volume_by_index(dir, index)
 
-  # docs.order_book.book_updates_count
+  # Returns a number of the order book updates since the beginning of the trading session.
+  # Note: research of the change of this value can be used to understand the market activity.
   def book_updates_count(self):
     return self._this.book_updates_count()
 
-  # docs.order_book.orders
+  # Returns a reference to a SecurityOrdersSnapshot object containing all your current quotes.
+  # Please read more about SecurityOrdersSnapshot here: <https://docs.hftbattle.com/en/api/SecurityOrdersSnapshot.html>.
   def orders(self):
     return SecurityOrdersSnapshot._from_this(&self._this.orders())
 
-  # docs.order_book.index_by_price
+  # Takes a direction and a price.
+  # Returns an index of the quote with given direction and price.
+  # If the quote with given price doesn't exist, maximum size_t value (i.e. `std::numeric_limits<size_t>::max()`) is returned.
   def index_by_price(self, dir, Price price):
     return self._this.index_by_price(dir, deref(price._this))
 
-  # docs.order_book.quotes_count
+  # Takes a direction.
+  # Returns a number of non-empty quotes with given direction.
   def quotes_count(self, dir):
     return self._this.quotes_count(dir)
 
-  # docs.order_book.all_quotes
+  # Takes a direction.
+  # Returns all quotes with given direction as a QuotesHolder object.
+  # QuotesHolder is a container, which allows you to iterate you through all quotes.
+  # Please read more about QuotesHolder here: <https://docs.hftbattle.com/en/api/QuotesHolder.html>.
   def all_quotes(self, dir):
     cdef:
       size_t i = 0
@@ -429,7 +467,7 @@ cdef class tm:
     return self._this.tm_hour
 
 
-# docs.participant_strategy.class
+# A wrapper class for your strategy, which interacts with a trading simulator.
 cdef class ParticipantStrategy:
   cdef defs.ParticipantStrategy* _this
 
@@ -439,74 +477,104 @@ cdef class ParticipantStrategy:
     result._this = _this
     return result
 
-  # docs.participant_strategy.trading_book
+  # Your current trading order book.
+  # Note: you cannot get trading order book before first `trading_book_update` call.
   def trading_book(self):
     return OrderBook._from_this(&self._this.trading_book())
 
-  # docs.participant_strategy.executed_amount
+  # Returns your current position.
+  # Only executed orders are taken into account.
   def executed_amount(self):
     return self._this.executed_amount()
 
-  # docs.participant_strategy.server_time
+  # Returns current server time in microseconds.
   def server_time(self):
     return self._this.server_time().count()
 
-  # docs.participant_strategy.volume_by_price
+  # Takes a direction and a price.
+  # Returns total number of lots in your active orders with given direction and price.
   def volume_by_price(self, dir, Price price):
     return self._this.volume_by_price(dir, deref(price._this))
 
-  # docs.participant_strategy.amount_before_order
+  # Takes a pointer to your order.
+  # Returns total number of lots queued before your order in the quote with given price.
   def amount_before_order(self, Order order):
     return self._this.amount_before_order(order._this)
 
-  # docs.participant_strategy.add_chart_point
+  # Takes a line_name string (name of the chart), double or Decimal value, y_axis_type — side which Y axis will be drawn on and chart_number — the number of your chart.
+  # Adds point to the chart at the current moment with given value.
+  # Each two adjacent points are connected.
+  # The resulting polygonal chain is your chart.
+  # chart_number allows you to create several charts and line_name allows you to draw several lines on the single image.
   def add_chart_point(self, str line_name, double value, int y_axis_type = 0, uint8_t chart_number = 1):
     return self._this.add_chart_point(line_name, deref(Decimal(value)._this), <defs.ChartYAxisType>(y_axis_type), chart_number)
 
   def add_chart_point(self, str line_name, Decimal value, int y_axis_type = 0, uint8_t chart_number = 1):
     return self._this.add_chart_point(line_name, deref(value._this), <defs.ChartYAxisType>(y_axis_type), chart_number)
 
-  # docs.participant_strategy.delete_order
+  # Takes a pointer to your order.
+  # Sends a request to remove this order from the auction.
+  # Note: the deletion is not executed instantly.
+  # You can read more about restrictions here: <https://docs.hftbattle.com/en/simulator/restrictions.html>.
   def delete_order(self, Order order):
     return self._this.delete_order(order._this)
 
-  # docs.participant_strategy.current_result
+  # Returns current result of your strategy (your profit).
+  # Executed and placed orders are taken into account.
+  # When calculating the result, we assume that all active orders are executed at the opposite best price.
   def current_result(self):
     return Decimal._from_this_tmp(self._this.current_result())
 
-  # docs.participant_strategy.add_limit_order
+  # Takes a direction, a price and an amount of the new order.
+  # Places the new limit order.
+  # Returns bool value — was the placement successful or not.
+  # Note: the order can be rejected if certain restrictions are not met.
+  # Please read about it here: <https://docs.hftbattle.com/en/HFAQ.html#simulator>
   def add_limit_order(self, dir, Price price, Amount amount):
     return self._this.add_limit_order(dir, deref(price._this), amount)
 
-  # docs.participant_strategy.set_stop_loss_result
+  # Takes non-positive number — desired minimum result.
+  # If your strategy reaches this result, simulator automatically liquidates your position and stops your strategy.
+  # Note: your position liquidation is not executed instantly, so your result may significantly differ from *stop_loss*.
+  # You can read more here: <https://docs.hftbattle.com/en/HFAQ.html#simulator>
   def set_stop_loss_result(self, Decimal stop_loss_result):
     return self._this.set_stop_loss_result(deref(stop_loss_result._this))
 
-  # docs.participant_strategy.delete_all_orders_at_dir
+  # Takes a direction.
+  # Sends a request to remove all your orders with given direction.
   def delete_all_orders_at_dir(self, dir):
     return self._this.delete_all_orders_at_dir(dir)
 
-  # docs.participant_strategy.server_time_tm
+  # Returns a server time of struct tm type with seconds precision.
+  # Note: server time in this format is useful to determine the time of the day.
   def server_time_tm(self):
     return tm._from_this_tmp(self._this.server_time_tm())
 
-  # docs.participant_strategy.add_ioc_order
+  # Takes a direction, a price and an amount of the new order.
+  # Places the new IOC (Immediate-Or-Cancel) order.
+  # Returns bool value — was the placement successful or not.
+  # Note: the order can be rejected if certain restrictions are not met.
+  # Please read about it here: <https://docs.hftbattle.com/en/HFAQ.html#simulator>
   def add_ioc_order(self, dir, Price price, Amount amount):
     return self._this.add_ioc_order(dir, deref(price._this), amount)
 
-  # docs.participant_strategy.set_max_total_amount
+  # Takes desired value of maximum position — non-negative number which must not be greater than 100.
+  # Sets this position as maximum and doesn't allow your strategy to exceed it.
   def set_max_total_amount(self, Amount max_total_amount):
     return self._this.set_max_total_amount(max_total_amount)
 
-  # docs.participant_strategy.delete_all_orders_at_price
+  # Takes a direction and a price.
+  # Sends a request to remove all your orders with given direction and price.
   def delete_all_orders_at_price(self, dir, Price price):
     return self._this.delete_all_orders_at_price(dir, deref(price._this))
 
-  # docs.participant_strategy.is_our.order
+  # Takes a pointer to the order.
+  # Returns bool value — whether this order is yours or not.
   def is_our(self, Order order):
     return self._this.is_our(order._this)
 
-  # docs.participant_strategy.is_our.deal
+  # Takes a reference to the deal.
+  # Returns bool value — whether your order was matched in the deal.
   def is_our(self, Deal deal):
     return self._this.is_our(deref(deal._this))
 
@@ -514,7 +582,7 @@ cdef class ParticipantStrategy:
     return self._this.fix_moment_in_viewer(name)
 
 
-# docs.execution_report.class
+# Report on a deal with your order.
 cdef class ExecutionReport:
   cdef const defs.ExecutionReport* _this
 
@@ -524,19 +592,19 @@ cdef class ExecutionReport:
     result._this = _this
     return result
 
-  # docs.execution_report.amount
+  # Returns a volume of the deal.
   def amount(self):
     return self._this.amount()
 
-  # docs.execution_report.order
+  # Returns a pointer to your order, that was matched in the deal.
   def order(self):
     return Order._from_this(self._this.order())
 
-  # docs.execution_report.price
+  # Returns a price of the deal.
   def price(self):
     return Decimal._from_this_tmp(self._this.price())
 
-  # docs.execution_report.dir
+  # Returns a direction of your executed order.
   def dir(self):
     return self._this.dir()
 

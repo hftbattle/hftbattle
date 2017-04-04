@@ -5,25 +5,25 @@ namespace hftbattle {
 
 class Order;
 
-// docs.execution_report.class
+// Report on a deal with your order.
 class ExecutionReport {
 public:
-  // docs.execution_report.order
+  // Returns a pointer to your order, that was matched in the deal.
   Order* order() const {
     return order_;
   }
 
-  // docs.execution_report.price
+  // Returns a price of the deal.
   Price price() const {
     return price_;
   }
 
-  // docs.execution_report.amount
+  // Returns a volume of the deal.
   Amount amount() const {
     return amount_;
   }
 
-  // docs.execution_report.dir
+  // Returns a direction of your executed order.
   Dir dir() const;
 
   virtual ~ExecutionReport() = default;

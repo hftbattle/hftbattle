@@ -10,7 +10,8 @@ class Quote;
 using QuotesType = std::map<Price, std::unique_ptr<Quote>,
     std::function<bool(const Price&, const Price&)>>;
 
-// docs.quotes_holder.class
+// This class allows you to iterate through the quotes.
+// Quotes are sorted by price in descending order for BID (Buy) and in ascending order for ASK (Sell).
 class QuotesHolder {
 public:
   using BaseConstIterator = QuotesType::const_iterator;
@@ -50,22 +51,22 @@ public:
 
   explicit QuotesHolder(const QuotesType* quotes) : quotes_(quotes) { }
 
-  // docs.quotes_holder.begin
+  // An iterator pointing to the first element in the collection.
   const_iterator begin() const {
     return QuotesHolderIterator(quotes_->begin());
   }
 
-  // docs.quotes_holder.end
+  // An iterator referring to the past-the-end element in the collection.
   const_iterator end() const {
     return QuotesHolderIterator(quotes_->end());
   }
 
-  // docs.quotes_holder.rbegin
+  // A reverse iterator pointing to the last element.
   const_reverse_iterator rbegin() const {
     return const_reverse_iterator(quotes_->rbegin());
   }
 
-  // docs.quotes_holder.rend
+  // A reverse iterator pointing to the theoretical element preceding the first element.
   const_reverse_iterator rend() const {
     return const_reverse_iterator(quotes_->rend());
   }

@@ -25,71 +25,101 @@ class RoyalManagerContest;
 
 }  // namespace simulator
 
-// docs.participant_strategy.class
+// A wrapper class for your strategy, which interacts with a trading simulator.
 class ParticipantStrategy : public LoggableComponent {
 public:
-  // docs.participant_strategy.trading_book_update
+  // This method is called after getting a new order book of a trading instrument.
   virtual void trading_book_update(const OrderBook& /*order_book*/) { }
 
-  // docs.participant_strategy.trading_deals_update
+  // This method is called after getting new deals on a trading instrument.
   virtual void trading_deals_update(std::vector<Deal>&& /*deals*/) { }
 
-  // docs.participant_strategy.execution_report_update
+  // This method is called after getting a report on your order execution.
   virtual void execution_report_update(const ExecutionReport& /*execution_report*/) { }
 
-  // docs.participant_strategy.trading_book
+  // Your current trading order book.
+  // Note: you cannot get trading order book before first `trading_book_update` call.
   const OrderBook& trading_book() const {
     return *trading_book_;
   }
 
-  // docs.participant_strategy.add_limit_order
+  // Takes a direction, a price and an amount of the new order.
+  // Places the new limit order.
+  // Returns bool value — was the placement successful or not.
+  // Note: the order can be rejected if certain restrictions are not met.
+  // Please read about it here: <https://docs.hftbattle.com/en/HFAQ.html#simulator>
   bool add_limit_order(Dir dir, Price price, Amount amount) const;
 
-  // docs.participant_strategy.add_ioc_order
+  // Takes a direction, a price and an amount of the new order.
+  // Places the new IOC (Immediate-Or-Cancel) order.
+  // Returns bool value — was the placement successful or not.
+  // Note: the order can be rejected if certain restrictions are not met.
+  // Please read about it here: <https://docs.hftbattle.com/en/HFAQ.html#simulator>
   bool add_ioc_order(Dir dir, Price price, Amount amount) const;
 
-  // docs.participant_strategy.delete_order
+  // Takes a pointer to your order.
+  // Sends a request to remove this order from the auction.
+  // Note: the deletion is not executed instantly.
+  // You can read more about restrictions here: <https://docs.hftbattle.com/en/simulator/restrictions.html>.
   void delete_order(Order* order) const;
 
-  // docs.participant_strategy.delete_all_orders_at_dir
+  // Takes a direction.
+  // Sends a request to remove all your orders with given direction.
   void delete_all_orders_at_dir(Dir dir) const;
 
-  // docs.participant_strategy.delete_all_orders_at_price
+  // Takes a direction and a price.
+  // Sends a request to remove all your orders with given direction and price.
   void delete_all_orders_at_price(Dir dir, Price price) const;
 
-  // docs.participant_strategy.amount_before_order
+  // Takes a pointer to your order.
+  // Returns total number of lots queued before your order in the quote with given price.
   Amount amount_before_order(const Order* order) const;
 
-  // docs.participant_strategy.volume_by_price
+  // Takes a direction and a price.
+  // Returns total number of lots in your active orders with given direction and price.
   Amount volume_by_price(Dir dir, Price price) const;
 
-  // docs.participant_strategy.add_chart_point
+  // Takes a line_name string (name of the chart), double or Decimal value, y_axis_type — side which Y axis will be drawn on and chart_number — the number of your chart.
+  // Adds point to the chart at the current moment with given value.
+  // Each two adjacent points are connected.
+  // The resulting polygonal chain is your chart.
+  // chart_number allows you to create several charts and line_name allows you to draw several lines on the single image.
   void add_chart_point(const std::string& line_name, Decimal value, ChartYAxisType y_axis_type = ChartYAxisType::Left, uint8_t chart_number = 1) const;
 
-  // docs.participant_strategy.current_result
+  // Returns current result of your strategy (your profit).
+  // Executed and placed orders are taken into account.
+  // When calculating the result, we assume that all active orders are executed at the opposite best price.
   Decimal current_result() const;
 
-  // docs.participant_strategy.server_time
+  // Returns current server time in microseconds.
   Microseconds server_time() const;
 
-  // docs.participant_strategy.server_time_tm
+  // Returns a server time of struct tm type with seconds precision.
+  // Note: server time in this format is useful to determine the time of the day.
   tm server_time_tm() const;
 
-  // docs.participant_strategy.set_max_total_amount
+  // Takes desired value of maximum position — non-negative number which must not be greater than 100.
+  // Sets this position as maximum and doesn't allow your strategy to exceed it.
   void set_max_total_amount(const Amount max_total_amount);
 
-  // docs.participant_strategy.set_stop_loss_result
+  // Takes non-positive number — desired minimum result.
+  // If your strategy reaches this result, simulator automatically liquidates your position and stops your strategy.
+  // Note: your position liquidation is not executed instantly, so your result may significantly differ from *stop_loss*.
+  // You can read more here: <https://docs.hftbattle.com/en/HFAQ.html#simulator>
   void set_stop_loss_result(const Decimal stop_loss_result);
 
-  // docs.participant_strategy.executed_amount
+  // Returns your current position.
+  // Only executed orders are taken into account.
   Amount executed_amount() const {
     return executed_amount_;
   }
 
-  // docs.participant_strategy.is_our.order
+  // Takes a pointer to the order.
+  // Returns bool value — whether this order is yours or not.
   bool is_our(const Order* order) const;
 
-  // docs.participant_strategy.is_our.deal
+  // Takes a reference to the deal.
+  // Returns bool value — whether your order was matched in the deal.
   bool is_our(const Deal& deal) const;
 
   void fix_moment_in_viewer(const std::string& name);

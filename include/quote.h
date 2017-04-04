@@ -5,32 +5,35 @@
 
 namespace hftbattle {
 
-// docs.default_quote_price.class
+// A default price to describe an empty level.
+// Takes a direction.
+// Returns a default price for the quote with given direction.
+// Note: if the quote doesn't exist, then it's price is equal to default_quote_price(dir).
 inline Price default_quote_price(Dir dir) {
   return dir == BID ? kMinPrice : kMaxPrice;
 }
 
 class Order;
 
-// docs.quote.class
+// Description of a price level in the order book.
 class Quote {
 public:
-  // docs.quote.dir
+  // Returns a direction of the quote.
   Dir dir() const {
     return dir_;
   }
 
-  // docs.quote.price
+  // Returns a price of the quote.
   Price price() const {
     return price_;
   }
 
-  // docs.quote.volume
+  // Returns total volume of lots in orders in this quote.
   Amount volume() const {
     return volume_;
   }
 
-  // docs.quote.server_time
+  // Returns the latest server time, when the quote has been changed, in microseconds.
   Microseconds server_time() const {
     return last_moment_;
   }
