@@ -578,6 +578,8 @@ cdef class ParticipantStrategy:
   def is_our(self, Deal deal):
     return self._this.is_our(deref(deal._this))
 
+  # Takes any string you want to be the name of current moment.
+  # Saves link to Viewer in the web system after data is written there.
   def fix_moment_in_viewer(self, str name):
     return self._this.fix_moment_in_viewer(name)
 

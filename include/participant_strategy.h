@@ -122,6 +122,8 @@ public:
   // Returns bool value — whether your order was matched in the deal.
   bool is_our(const Deal& deal) const;
 
+  // Takes any string you want to be the name of current moment.
+  // Saves link to Viewer in the web system after data is written there.
   void fix_moment_in_viewer(const std::string& name);
 
   ParticipantStrategy();
