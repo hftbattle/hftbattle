@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 # Enum class describing a side which to draw Y-axis on (left or right).
 # - Left — on the left side.
 # - Right — on the right side.
