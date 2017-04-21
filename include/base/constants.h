@@ -28,6 +28,7 @@ static constexpr Price kMaxPrice(100000000);
 static constexpr Decimal kMinStopLossResult = Decimal(-100000.0);
 static constexpr Amount kMaximumMaxExecutedAmount = 100;
 static constexpr size_t kMaxViewerMomentsCount = 50;
+static constexpr size_t kMaxOrdersCount = 2000000;
 
 namespace simulator {
 
