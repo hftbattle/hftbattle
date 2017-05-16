@@ -7,6 +7,9 @@ import platform
 import subprocess
 import sys
 
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 pack_path = os.path.dirname(os.path.realpath(__file__))
 build_dir = os.path.join(pack_path, "build")
 if not os.path.exists(build_dir):
